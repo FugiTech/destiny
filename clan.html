@@ -10,10 +10,18 @@
       color: #000;
       text-align: center;
     }
+    h1 {
+      font-size: 5em;
+      margin: 20px auto 0;
+    }
     h2 {
       color: #666;
-      font-size: 0.5em;
+      font-size: 1.5em;
       font-style: italic;
+      margin: 0 auto 20px;
+    }
+    h3 {
+      font-size: 3em;
     }
     .guardian {
       margin: 1em auto;
@@ -52,7 +60,7 @@
 
   <div class="row">
     <div class="col-xs-6">
-      <h1>Playstation</h1>
+      <h3>Playstation</h3>
       <div class="guardian" t:render="playstation">
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
@@ -74,7 +82,7 @@
     </div>
 
     <div class="col-xs-6">
-      <h1>Xbox</h1>
+      <h3>Xbox</h3>
       <div class="guardian" t:render="xbox">
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
