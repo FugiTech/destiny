@@ -1,5 +1,6 @@
 from functools import wraps
 from twisted.internet.defer import Deferred, DeferredList, inlineCallbacks, maybeDeferred, returnValue
+from twisted.web import client
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
 
@@ -8,6 +9,9 @@ import datetime, json, klein, re, treq
 ALIASES = {
   "twitch": "Twitch Staff"
 }
+
+# Decrease noise in log files
+client._HTTP11ClientFactory.noisy = False
 
 def branchDeferred(deferred):
   branch = Deferred()
