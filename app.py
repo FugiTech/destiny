@@ -1,9 +1,9 @@
-from klein import resource, route
+from functools import wraps
 from twisted.internet.defer import inlineCallbacks, maybeDeferred, returnValue
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
 
-import treq, json, re
+import json, klein, re, treq
 
 ALIASES = {
   "twitch": "Twitch Staff"
@@ -112,17 +112,32 @@ class ClanPage(Element):
 
     return self._members.addCallback(render)
 
-@route('/')
+@klein.route('/')
 def index(request):
   return File("index.html")
 
-@route('/<int:id>')
+@klein.route('/<int:id>')
 def clan_id(request, id):
   return ClanPage(id, id)
 
-@route('/<string:name>')
+@klein.route('/<string:name>')
 def clan_name(request, name):
   if name.lower() in ALIASES:
     name = ALIASES[name.lower()]
 
   return ClanPage(lookupClan(name), name)
+
+def monkeypatch_klein_render(render):
+  @wraps(render)
+  def new_render(self, request):
+    host = request.getRequestHostname()
+    port = getattr(request.getHost(), "port", 80)
+    secure = request.isSecure()
+    request.setHost(host, port, secure)
+    return render(self, request)
+  return new_render
+
+def resource():
+  klein_resource = klein.resource()
+  klein_resource.render = monkeypatch_klein_render(klein_resource.render)
+  return klein_resource
