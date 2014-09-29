@@ -1,42 +1,78 @@
 <html xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
 <head>
   <title t:render="title">Destiny Clan Roster</title>
+  <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+  <style>
+    body {
+      color: #fff;
+    }
+    h1 {
+      color: #000;
+    }
+    .guardian {
+      margin: 1em;
+    }
+    .name {
+      display: block;
+    }
+    .name, .level {
+      float: left;
+      font-size: 2em;
+    }
+    .level {
+      float: right;
+      margin: 4px;
+    }
+    img {
+      float: left;
+    }
+    .light, .grimoire, .character, .played, .seen {
+      font-size: 0.8em;
+    }
+  </style>
 </head>
 <body>
 
 <h1>Playstation</h1>
-<div t:render="playstation">
+<div class="guardian" t:render="playstation">
   <t:attr name="style"><t:slot name="style" /></t:attr>
   <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
   <span class="name"><t:slot name="name" /></span>
-  <span class="level">Level <t:slot name="levelString" /></span>
+  <span class="level"><t:slot name="levelString" /></span>
+  <br /><br />
   <span class="light">(<t:slot name="lightString" /> light)</span>
   <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
+  <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
+  <br />
   <span class="character">
     <t:slot name="gender" />
     <t:slot name="race" />
     <t:slot name="class" />
   </span>
-  <span class="played"><t:slot name="minutesPlayedString" /> minutes played</span>
+  <br />
   <span class="seen">Last seen <t:slot name="lastSeenString" /></span>
 </div>
 
 <h1>Xbox</h1>
-<div t:render="xbox">
+<div class="guardian" t:render="xbox">
   <t:attr name="style"><t:slot name="style" /></t:attr>
   <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
   <span class="name"><t:slot name="name" /></span>
-  <span class="level">Level <t:slot name="levelString" /></span>
+  <span class="level"><t:slot name="levelString" /></span>
+  <br /><br />
   <span class="light">(<t:slot name="lightString" /> light)</span>
   <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
+  <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
+  <br />
   <span class="character">
     <t:slot name="gender" />
     <t:slot name="race" />
     <t:slot name="class" />
   </span>
-  <span class="played"><t:slot name="minutesPlayedString" /> minutes played</span>
+  <br />
   <span class="seen">Last seen <t:slot name="lastSeenString" /></span>
 </div>
 
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
 </html>
