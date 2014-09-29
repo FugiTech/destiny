@@ -1,5 +1,5 @@
 from functools import wraps
-from twisted.internet.defer import DeferredList, inlineCallbacks, maybeDeferred, returnValue
+from twisted.internet.defer import Deferred, DeferredList, inlineCallbacks, maybeDeferred, returnValue
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
 
@@ -8,6 +8,17 @@ import json, klein, re, treq
 ALIASES = {
   "twitch": "Twitch Staff"
 }
+
+def branchDeferred(deferred):
+  branch = Deferred()
+  def success(result):
+    branch.callback(result)
+    return result
+  def failure(fail):
+    branch.errback(fail)
+    return fail
+  deferred.addCallbacks(success, failure)
+  return branch
 
 @inlineCallbacks
 def lookupClan(name):
@@ -103,7 +114,7 @@ class ClanPage(Element):
       for character in characters["playstation"]:
         yield tag.clone().fillSlots(**character)
 
-    return self._members.addCallback(render)
+    return branchDeferred(self._members).addCallback(render)
 
   @renderer
   def xbox(self, request, tag):
@@ -111,7 +122,7 @@ class ClanPage(Element):
       for character in characters["xbox"]:
         yield tag.clone().fillSlots(**character)
 
-    return self._members.addCallback(render)
+    return branchDeferred(self._members).addCallback(render)
 
 @klein.route('/<int:id>')
 def clan_id(request, id):
