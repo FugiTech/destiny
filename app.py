@@ -1,7 +1,7 @@
 from klein import resource, route
 from twisted.internet.defer import inlineCallbacks, maybeDeferred, returnValue
 from twisted.web.static import File
-from twisted.web.template import Element, XMLFile
+from twisted.web.template import Element, XMLFile, renderer
 
 import treq, json, re
 
@@ -60,7 +60,7 @@ def lookupCharacters(member, characters):
   for account in data["Response"]["destinyAccounts"]:
     if account["userInfo"]["membershipType"] == 1:
       platform = "xbox"
-    elif account["userInfo"]["membershipType"] == 2
+    elif account["userInfo"]["membershipType"] == 2:
       platform = "playstation"
     else:
       continue
@@ -81,7 +81,7 @@ def lookupCharacters(member, characters):
         "background": "http://bungie.net" + character["backgroundPath"]
       }
       character_data["style"] = 'background: url("' + character_data["background"] + '")'
-      
+
       characters[platform].append(character_data)
 
 class ClanPage(Element):
@@ -117,14 +117,11 @@ def index(request):
   return File("index.html")
 
 @route('/<int:id>')
-def clan_id(request):
-  id = request
+def clan_id(request, id):
   return ClanPage(id, id)
 
-@route('/<string:name')
-def clan_name(request):
-  name = request
-
+@route('/<string:name>')
+def clan_name(request, name):
   if name.lower() in ALIASES:
     name = ALIASES[name.lower()]
 
