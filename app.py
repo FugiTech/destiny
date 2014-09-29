@@ -30,12 +30,12 @@ def lookupClan(name):
     "itemsPerPage": 1
   }))
   data = yield treq.json_content(response)
-  returnValue(int(data["Response"]["results"][0]["detail"]["groupId"]))
+  returnValue(int(data["Response"]["results"][0]["detail"]["groupId"]) if data["Response"]["results"] else 0)
 
 @inlineCallbacks
 def lookupMembers(id):
   page = 1
-  hasMore = True
+  hasMore = True if id else False
   members = []
   characters = {
     "playstation": [],
@@ -153,15 +153,18 @@ def clan_id(request, id):
 
 @klein.route('/<string:name>')
 def clan_name(request, name):
-  if not name: # Hack because route('/') didn't work :(
-    return File("index.html")
-  elif name == "favicon.ico":
-    return None
-  else:
-    if name.lower() in ALIASES:
-      name = ALIASES[name.lower()]
+  if name.lower() in ALIASES:
+    name = ALIASES[name.lower()]
 
-    return ClanPage(lookupClan(name), name)
+  return ClanPage(lookupClan(name), name)
+
+@klein.route('/favicon.ico')
+def favicon(request):
+  return None
+
+@klein.route('/')
+def index(request):
+  return File("./index.html")
 
 def monkeypatch_klein_render(render):
   @wraps(render)
