@@ -1,5 +1,5 @@
 from functools import wraps
-from twisted.internet.defer import inlineCallbacks, maybeDeferred, returnValue
+from twisted.internet.defer import DeferredList, inlineCallbacks, maybeDeferred, returnValue
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
 
@@ -46,7 +46,7 @@ def lookupMembers(id):
   # Load character data in parallel
   for member in members:
     deferreds.append(lookupCharacters(member, characters))
-  yield deferreds
+  yield DeferredList(deferreds, fireOnOneErrback=True, consumeErrors=True)
 
   for platform_characters in characters.values():
     platform_characters.sort(key=lambda c: (c["level"], c["light"]), reverse=True)
@@ -99,7 +99,7 @@ class ClanPage(Element):
   @renderer
   def playstation(self, request, tag):
     def render(characters):
-      for character in members["playstation"]:
+      for character in characters["playstation"]:
         yield tag.clone().fillSlots(**character)
 
     return self._members.addCallback(render)
@@ -107,14 +107,10 @@ class ClanPage(Element):
   @renderer
   def xbox(self, request, tag):
     def render(characters):
-      for character in members["xbox"]:
+      for character in characters["xbox"]:
         yield tag.clone().fillSlots(**character)
 
     return self._members.addCallback(render)
-
-@klein.route('/')
-def index(request):
-  return File("index.html")
 
 @klein.route('/<int:id>')
 def clan_id(request, id):
@@ -126,6 +122,10 @@ def clan_name(request, name):
     name = ALIASES[name.lower()]
 
   return ClanPage(lookupClan(name), name)
+
+@klein.route('/')
+def index(request):
+  return File("index.html")
 
 def monkeypatch_klein_render(render):
   @wraps(render)
