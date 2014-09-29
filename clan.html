@@ -1,0 +1,36 @@
+<html xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+<head>
+  <title t:render="title">Destiny Clan Roster</title>
+</head>
+<body>
+
+<h1>Playstation</h1>
+<div t:render="playstation">
+  <t:attr name="style"><t:slot name="style" /></t:attr>
+  <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
+  <span class="name"><t:slot name="name" /></span>
+  <span class="character">
+    <t:slot name="gender" />
+    <t:slot name="race" />
+    <t:slot name="class" />
+  </span>
+  <span class="level">Level <t:slot name="level" /></span>
+  <span class="light">(<t:slot name="light" /> light)</span>
+</div>
+
+<h1>Xbox</h1>
+<div t:render="xbox">
+  <t:attr name="style"><t:slot name="style" /></t:attr>
+  <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
+  <span class="name"><t:slot name="name" /></span>
+  <span class="character">
+    <t:slot name="gender" />
+    <t:slot name="race" />
+    <t:slot name="class" />
+  </span>
+  <span class="level">Level <t:slot name="level" /></span>
+  <span class="light">(<t:slot name="light" /> light)</span>
+</div>
+
+</body>
+</html>

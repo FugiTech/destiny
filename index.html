@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+  <title>Destiny Clan Roster</title>
+</head>
+<body>
+  <form id="search_form">
+    <input type="text" id="search_query">
+    <input type="submit">
+  </form>
+  <script>
+    document.getElementById("search_form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      window.location = "/" + document.getElementById("search_query").value;
+    });
+  </script>
+</body>
+</html>
