@@ -100,7 +100,7 @@ def lookupCharacters(member, characters):
         "lastSeen": "",
         "lastSeenString": ""
       }
-      character_data["style"] = 'background: url("' + character_data["background"] + '")'
+      character_data["style"] = 'background: url("' + character_data["background"] + '"); background-repeat: no-repeat; width: 474px; height: 96px;'
 
       try:
         response = yield treq.get("http://www.bungie.net/Platform/Destiny/{!s}/Account/{!s}/Character/{!s}/".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"], character["characterId"]))
