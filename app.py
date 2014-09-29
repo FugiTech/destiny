@@ -30,7 +30,20 @@ def lookupClan(name):
     "itemsPerPage": 1
   }))
   data = yield treq.json_content(response)
-  returnValue(int(data["Response"]["results"][0]["detail"]["groupId"]) if data["Response"]["results"] else 0)
+
+  if data["Response"]["results"]:
+    clan = data["Response"]["results"][0]["detail"]
+    returnValue({
+      "id": int(clan["groupId"]),
+      "name": clan["name"],
+      "motto": clan["about"],
+    })
+  else:
+    returnValue({
+      "id": 0,
+      "name": "No Clan Found",
+      "motto": "Better luck next time"
+    })
 
 @inlineCallbacks
 def lookupMembers(id):
@@ -122,14 +135,30 @@ def lookupCharacters(member, characters):
 class ClanPage(Element):
   loader = XMLFile("clan.html")
 
-  def __init__(self, clan_id, clan_name):
-    self._clan_name = str(clan_name)
-    self._clan_id = maybeDeferred(lambda: clan_id)
-    self._members = self._clan_id.addCallback(lookupMembers)
+  def __init__(self, clan_id):
+    self._clan = maybeDeferred(lambda: clan_id)
+    self._members = branchDeferred(self._clan).addCallback(lambda c: c["id"]).addCallback(lookupMembers)
 
   @renderer
   def title(self, request, tag):
-    return tag(self._clan_name + " - Destiny Clan Roster")
+    def render(clan):
+      return tag(clan["name"] + " - Destiny Clan Roster")
+    
+    return branchDeferred(self._clan).addCallback(render)
+
+  @renderer
+  def header(self, request, tag):
+    def render(clan):
+      return tag(clan["name"])
+
+    return branchDeferred(self._clan).addCallback(render)
+
+  @renderer
+  def subheader(self, request, tag):
+    def render(clan):
+      return tag(clan["motto"])
+
+    return branchDeferred(self._clan).addCallback(render)
 
   @renderer
   def playstation(self, request, tag):
@@ -149,14 +178,14 @@ class ClanPage(Element):
 
 @klein.route('/<int:id>')
 def clan_id(request, id):
-  return ClanPage(id, id)
+  return ClanPage(id)
 
 @klein.route('/<string:name>')
 def clan_name(request, name):
   if name.lower() in ALIASES:
     name = ALIASES[name.lower()]
 
-  return ClanPage(lookupClan(name), name)
+  return ClanPage(lookupClan(name))
 
 @klein.route('/favicon.ico')
 def favicon(request):
