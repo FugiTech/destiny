@@ -162,9 +162,10 @@ def clan_name(request, name):
 def favicon(request):
   return None
 
-@klein.route('/')
+@klein.route('/', branch=True)
 def index(request):
-  return File("./index.html")
+  with open("index.html", "r") as f:
+    return f.read()
 
 def monkeypatch_klein_render(render):
   @wraps(render)
