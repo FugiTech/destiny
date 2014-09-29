@@ -75,7 +75,9 @@ def lookupCharacters(member, characters):
         "gender": character["gender"]["genderName"],
         "class": character["characterClass"]["className"],
         "level": character["level"],
+        "levelString": "{:,d}".format(character["level"]),
         "light": 0,
+        "lightString": "{:,d}".format(0),
         "icon": "http://bungie.net" + character["emblemPath"],
         "background": "http://bungie.net" + character["backgroundPath"]
       }
