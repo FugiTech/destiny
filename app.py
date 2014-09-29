@@ -55,7 +55,7 @@ def lookupMembers(id):
 
 @inlineCallbacks
 def lookupCharacters(member, characters):
-  response = yield treq.get("http://www.bungie.net/platform/User/GetBungieAccount/" + member["membershipId"] + "/254/")
+  response = yield treq.get("http://www.bungie.net/platform/User/GetBungieAccount/" + member["membershipId"].encode("UTF-8") + "/254/")
   data = yield treq.json_content(response)
   for account in data["Response"]["destinyAccounts"]:
     if account["userInfo"]["membershipType"] == 1:
@@ -75,7 +75,6 @@ def lookupCharacters(member, characters):
         "gender": character["gender"]["genderName"],
         "class": character["characterClass"]["className"],
         "level": character["level"],
-        "light": 0,
         "light": 0,
         "icon": "http://bungie.net" + character["emblemPath"],
         "background": "http://bungie.net" + character["backgroundPath"]
@@ -118,14 +117,15 @@ def clan_id(request, id):
 
 @klein.route('/<string:name>')
 def clan_name(request, name):
-  if name.lower() in ALIASES:
-    name = ALIASES[name.lower()]
+  if not name: # Hack because route('/') didn't work :(
+    return File("index.html")
+  elif name == "favicon.ico":
+    return None
+  else:
+    if name.lower() in ALIASES:
+      name = ALIASES[name.lower()]
 
-  return ClanPage(lookupClan(name), name)
-
-@klein.route('/')
-def index(request):
-  return File("index.html")
+    return ClanPage(lookupClan(name), name)
 
 def monkeypatch_klein_render(render):
   @wraps(render)
