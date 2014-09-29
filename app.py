@@ -3,7 +3,7 @@ from twisted.internet.defer import Deferred, DeferredList, inlineCallbacks, mayb
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
 
-import json, klein, re, treq
+import datetime, json, klein, re, treq
 
 ALIASES = {
   "twitch": "Twitch Staff"
@@ -45,7 +45,7 @@ def lookupMembers(id):
 
   while hasMore:
     # No idea what is different between V1, V2, and V3...
-    response = yield treq.get("http://www.bungie.net/platform/Group/" + str(id) + "/MembersV3/", params={
+    response = yield treq.get("http://www.bungie.net/Platform/Group/" + str(id) + "/MembersV3/", params={
       "itemsPerPage": 50,
       "currentPage": page
     })
@@ -66,7 +66,7 @@ def lookupMembers(id):
 
 @inlineCallbacks
 def lookupCharacters(member, characters):
-  response = yield treq.get("http://www.bungie.net/platform/User/GetBungieAccount/" + member["membershipId"].encode("UTF-8") + "/254/")
+  response = yield treq.get("http://www.bungie.net/Platform/User/GetBungieAccount/" + member["membershipId"].encode("UTF-8") + "/254/")
   data = yield treq.json_content(response)
   for account in data["Response"]["destinyAccounts"]:
     if account["userInfo"]["membershipType"] == 1:
@@ -87,12 +87,35 @@ def lookupCharacters(member, characters):
         "class": character["characterClass"]["className"],
         "level": character["level"],
         "levelString": "{:,d}".format(character["level"]),
+        "icon": "http://bungie.net" + character["emblemPath"],
+        "background": "http://bungie.net" + character["backgroundPath"],
+
+        # Default values for extra data (in case it fails)
         "light": 0,
         "lightString": "{:,d}".format(0),
-        "icon": "http://bungie.net" + character["emblemPath"],
-        "background": "http://bungie.net" + character["backgroundPath"]
+        "grimoire": 0,
+        "grimoireString": "{:,d}".format(0),
+        "minutesPlayed": 0,
+        "minutesPlayedString": "{:,d}".format(0),
+        "lastSeen": "",
+        "lastSeenString": ""
       }
       character_data["style"] = 'background: url("' + character_data["background"] + '")'
+
+      try:
+        response = yield treq.get("http://www.bungie.net/Platform/Destiny/{!s}/Account/{!s}/Character/{!s}/".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"], character["characterId"]))
+        extra_data = yield treq.json_content(response)
+        extra_data = extra_data["Response"]["data"]["characterBase"]
+        character_data["light"] = extra_data["stats"]["STAT_LIGHT"]["value"]
+        character_data["lightString"] = "{:,d}".format(character_data["light"])
+        character_data["grimoire"] = extra_data["grimoireScore"]
+        character_data["grimoireString"] = "{:,d}".format(character_data["grimoire"])
+        character_data["minutesPlayed"] = int(extra_data["minutesPlayedTotal"])
+        character_data["minutesPlayedString"] = "{:,d}".format(character_data["minutesPlayed"])
+        character_data["lastSeen"] = extra_data["dateLastPlayed"]
+        character_data["lastSeenString"] = datetime.datetime.strptime(extra_data["dateLastPlayed"], "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d, %I:%M%p")
+      except:
+        pass
 
       characters[platform].append(character_data)
 

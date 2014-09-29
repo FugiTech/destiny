@@ -9,13 +9,16 @@
   <t:attr name="style"><t:slot name="style" /></t:attr>
   <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
   <span class="name"><t:slot name="name" /></span>
+  <span class="level">Level <t:slot name="levelString" /></span>
+  <span class="light">(<t:slot name="lightString" /> light)</span>
+  <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
   <span class="character">
     <t:slot name="gender" />
     <t:slot name="race" />
     <t:slot name="class" />
   </span>
-  <span class="level">Level <t:slot name="levelString" /></span>
-  <span class="light">(<t:slot name="lightString" /> light)</span>
+  <span class="played"><t:slot name="minutesPlayedString" /> minutes played</span>
+  <span class="seen">Last seen <t:slot name="lastSeenString" /></span>
 </div>
 
 <h1>Xbox</h1>
@@ -23,13 +26,16 @@
   <t:attr name="style"><t:slot name="style" /></t:attr>
   <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
   <span class="name"><t:slot name="name" /></span>
+  <span class="level">Level <t:slot name="levelString" /></span>
+  <span class="light">(<t:slot name="lightString" /> light)</span>
+  <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
   <span class="character">
     <t:slot name="gender" />
     <t:slot name="race" />
     <t:slot name="class" />
   </span>
-  <span class="level">Level <t:slot name="levelString" /></span>
-  <span class="light">(<t:slot name="lightString" /> light)</span>
+  <span class="played"><t:slot name="minutesPlayedString" /> minutes played</span>
+  <span class="seen">Last seen <t:slot name="lastSeenString" /></span>
 </div>
 
 </body>
