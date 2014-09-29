@@ -129,12 +129,12 @@ def clan_name(request, name):
 
 def monkeypatch_klein_render(render):
   @wraps(render)
-  def new_render(self, request):
+  def new_render(request):
     host = request.getRequestHostname()
     port = getattr(request.getHost(), "port", 80)
     secure = request.isSecure()
     request.setHost(host, port, secure)
-    return render(self, request)
+    return render(request)
   return new_render
 
 def resource():
