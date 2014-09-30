@@ -162,6 +162,10 @@ class ClanPage(Element):
     self._clan = clan
     self._members = branchDeferred(self._clan).addCallback(lambda c: c["id"]).addCallback(lookupMembers)
 
+  def render(self, request):
+    request.write("<!doctype html>\n")
+    return Element.render(self, request)
+
   @renderer
   def title(self, request, tag):
     def render(clan):
