@@ -157,8 +157,8 @@ def lookupCharacters(member, characters):
         "lightString": "{:,d}".format(0),
         "grimoire": 0,
         "grimoireString": "{:,d}".format(0),
-        "minutesPlayed": 0,
-        "minutesPlayedString": "{:,d}".format(0),
+        "hoursPlayed": 0,
+        "hoursPlayedString": "{:,d}".format(0),
         "lastSeen": "",
         "lastSeenString": ""
       }
@@ -171,8 +171,8 @@ def lookupCharacters(member, characters):
           character_data["lightString"] = "{:,d}".format(character_data["light"])
           character_data["grimoire"] = extra_data["grimoireScore"]
           character_data["grimoireString"] = "{:,d}".format(character_data["grimoire"])
-          character_data["minutesPlayed"] = int(extra_data["minutesPlayedTotal"])
-          character_data["minutesPlayedString"] = "{:,d}".format(character_data["minutesPlayed"])
+          character_data["hoursPlayed"] = int(extra_data["minutesPlayedTotal"]) / 60
+          character_data["hoursPlayedString"] = "{:,d}".format(character_data["hoursPlayed"])
           character_data["lastSeen"] = extra_data["dateLastPlayed"]
           character_data["lastSeenString"] = datetime.datetime.strptime(extra_data["dateLastPlayed"], "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d, %I:%M%p")
         except:
