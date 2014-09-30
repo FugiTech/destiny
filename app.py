@@ -1,5 +1,6 @@
 from functools import wraps
 from twisted.internet.defer import Deferred, DeferredList, inlineCallbacks, maybeDeferred, returnValue
+from twisted.python import log
 from twisted.web import client
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
@@ -151,14 +152,17 @@ def lookupCharacters(member, characters):
 
       if character["characterId"] in extra_char_data:
         extra_data = extra_char_data[character["characterId"]]
-        character_data["light"] = extra_data["stats"]["STAT_LIGHT"]["value"]
-        character_data["lightString"] = "{:,d}".format(character_data["light"])
-        character_data["grimoire"] = extra_data["grimoireScore"]
-        character_data["grimoireString"] = "{:,d}".format(character_data["grimoire"])
-        character_data["minutesPlayed"] = int(extra_data["minutesPlayedTotal"])
-        character_data["minutesPlayedString"] = "{:,d}".format(character_data["minutesPlayed"])
-        character_data["lastSeen"] = extra_data["dateLastPlayed"]
-        character_data["lastSeenString"] = datetime.datetime.strptime(extra_data["dateLastPlayed"], "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d, %I:%M%p")
+        try:
+          character_data["light"] = extra_data["stats"]["STAT_LIGHT"]["value"]
+          character_data["lightString"] = "{:,d}".format(character_data["light"])
+          character_data["grimoire"] = extra_data["grimoireScore"]
+          character_data["grimoireString"] = "{:,d}".format(character_data["grimoire"])
+          character_data["minutesPlayed"] = int(extra_data["minutesPlayedTotal"])
+          character_data["minutesPlayedString"] = "{:,d}".format(character_data["minutesPlayed"])
+          character_data["lastSeen"] = extra_data["dateLastPlayed"]
+          character_data["lastSeenString"] = datetime.datetime.strptime(extra_data["dateLastPlayed"], "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d, %I:%M%p")
+        except:
+          log.msg(repr(extra_data))
 
       characters[platform].append(character_data)
 
