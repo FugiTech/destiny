@@ -153,7 +153,7 @@ def lookupCharacters(member, characters):
       if character["characterId"] in extra_char_data:
         extra_data = extra_char_data[character["characterId"]]
         try:
-          character_data["light"] = extra_data["stats"]["STAT_LIGHT"]["value"]
+          character_data["light"] = extra_data["stats"]["STAT_LIGHT"]["value"] if "STAT_LIGHT" in extra_data["stats"] else 0
           character_data["lightString"] = "{:,d}".format(character_data["light"])
           character_data["grimoire"] = extra_data["grimoireScore"]
           character_data["grimoireString"] = "{:,d}".format(character_data["grimoire"])
