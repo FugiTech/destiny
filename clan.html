@@ -30,22 +30,24 @@
       width: 474px;
       height: 96px;
     }
-    img {
-      float: left;
+    .icon, .descriptors, .stats {
+      display: inline-block;
       margin-right: 8px;
     }
-    .identifier {
-      float: left;
+    .stats {
+      text-align: right;
+    }
+    .name, .level {
       font-size: 2em;
     }
-    .level {
-      float: right;
-      margin: 4px;
+    .character {
+      font-size: 1.2em;
     }
-    .stats, .character, .seen {
-      float: left;
+    .seen, .light, .grimoire, .played {
       font-size: 0.8em;
-      line-height: 1;
+    }
+    .light {
+      color: #F5DC56;
     }
 
     footer {
@@ -74,24 +76,31 @@
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
 
-        <div class="identifier clearfix">
-          <span class="name"><t:slot name="name" /></span>
-          <span class="level"><t:slot name="levelString" /></span>
+        <div class="descriptors">
+          <div class="name"><t:slot name="name" /></div>
+          <div class="character">
+            <t:slot name="gender" />
+            <t:slot name="race" />
+            <t:slot name="class" />
+          </div>
+          <div class="seen">Last seen: <t:slot name="lastSeenString" /></div>
         </div>
 
-        <div class="stats clearfix">
-          <span class="light">(<t:slot name="lightString" /> light)</span>
-          <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
-          <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
+        <div class="stats">
+          <div class="level"><t:slot name="levelString" /></div>
+          <div class="light">
+            <t:slot name="lightString" />
+            &#10022;
+          </div>
+          <div class="grimoire">
+            <t:slot name="grimoireString" />
+            <img src="http://static01.bungie.net/img/theme/destiny/icons/icon_grimoire_lightgray.png" />
+          </div>
+          <div class="played">
+            <t:slot name="minutesPlayedString" />
+            <span class="glyphicon glyphicon-time"></span>
+          </div>
         </div>
-
-        <div class="character clearfix">
-          <t:slot name="gender" />
-          <t:slot name="race" />
-          <t:slot name="class" />
-        </div>
-
-        <div class="seen clearfix">Last seen: <t:slot name="lastSeenString" /></div>
       </div>
     </div>
 
@@ -101,24 +110,31 @@
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
 
-        <div class="identifier clearfix">
-          <span class="name"><t:slot name="name" /></span>
-          <span class="level"><t:slot name="levelString" /></span>
+        <div class="descriptors">
+          <div class="name"><t:slot name="name" /></div>
+          <div class="character">
+            <t:slot name="gender" />
+            <t:slot name="race" />
+            <t:slot name="class" />
+          </div>
+          <div class="seen">Last seen: <t:slot name="lastSeenString" /></div>
         </div>
 
-        <div class="stats clearfix">
-          <span class="light">(<t:slot name="lightString" /> light)</span>
-          <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
-          <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
+        <div class="stats">
+          <div class="level"><t:slot name="levelString" /></div>
+          <div class="light">
+            <t:slot name="lightString" />
+            &#10022;
+          </div>
+          <div class="grimoire">
+            <t:slot name="grimoireString" />
+            <img src="http://static01.bungie.net/img/theme/destiny/icons/icon_grimoire_lightgray.png" />
+          </div>
+          <div class="played">
+            <t:slot name="minutesPlayedString" />
+            <span class="glyphicon glyphicon-time"></span>
+          </div>
         </div>
-
-        <div class="character clearfix">
-          <t:slot name="gender" />
-          <t:slot name="race" />
-          <t:slot name="class" />
-        </div>
-
-        <div class="seen clearfix">Last seen: <t:slot name="lastSeenString" /></div>
       </div>
     </div>
   </div>
