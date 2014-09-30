@@ -32,11 +32,18 @@ def resolveClan(id):
   clan = data["Response"]["detail"]
 
   if clan:
-    returnValue({
-      "id": int(clan["groupId"]),
-      "name": clan["name"],
-      "motto": HTMLParser.HTMLParser().unescape(clan["about"]),
-    })
+    if clan["memberCount"] > 1000:
+      returnValue({
+        "id": 0,
+        "name": '"{}" is too big'.format(clan["name"]),
+        "motto": "Clans with over 1,000 members can't be processed",
+      })
+    else:
+      returnValue({
+        "id": int(clan["groupId"]),
+        "name": clan["name"],
+        "motto": HTMLParser.HTMLParser().unescape(clan["about"]),
+      })
   else:
     returnValue({
       "id": 0,
@@ -57,11 +64,18 @@ def lookupClan(name):
 
   if data["Response"]["results"]:
     clan = data["Response"]["results"][0]["detail"]
-    returnValue({
-      "id": int(clan["groupId"]),
-      "name": clan["name"],
-      "motto": HTMLParser.HTMLParser().unescape(clan["about"]),
-    })
+    if clan["memberCount"] > 1000:
+      returnValue({
+        "id": 0,
+        "name": '"{}" is too big'.format(clan["name"]),
+        "motto": "Clans with over 1,000 members can't be processed",
+      })
+    else:
+      returnValue({
+        "id": int(clan["groupId"]),
+        "name": clan["name"],
+        "motto": HTMLParser.HTMLParser().unescape(clan["about"]),
+      })
   else:
     returnValue({
       "id": 0,
