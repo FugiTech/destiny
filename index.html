@@ -18,9 +18,14 @@
       margin: 1em auto;
     }
 
+    html, body {
+      min-height: 100%;
+      width: 100%;
+    }
     body {
       position: absolute;
-      min-height: 500px;
+      min-height: 200px;
+      height: 100%;
     }
     footer {
       position: absolute;
@@ -42,7 +47,7 @@
   </form>
 </div>
 
-<footer><a href="http://github.com/Fugiman/Destiny">Source Code</a> &#0169; Chris Gamble 2014 under the MIT license</footer>
+<footer><a href="http://github.com/Fugiman/Destiny">Source Code</a> © Chris Gamble 2014 under the MIT license</footer>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script>
   document.getElementById("search_form").addEventListener("submit", function (e) {
