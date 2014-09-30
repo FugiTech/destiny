@@ -229,6 +229,10 @@ def clan_name(request, name):
 def favicon(request):
   return None
 
+@klein.route('/robots.txt')
+def favicon(request):
+  return None
+
 @klein.route('/', branch=True)
 def index(request):
   with open("index.html", "r") as f:
