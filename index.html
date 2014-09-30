@@ -7,20 +7,20 @@
     body, input {
       text-align: center;
     }
-    h1 {
-      margin-top: 300px;
+    .container {
+      height: 160px;
+      width: 400px;
+      position: absolute;
+      top: calc(50% - 80px);
+      left: calc(50% - 200px);
     }
     #search_query {
       margin: 1em auto;
     }
 
-    html, body {
-      min-height: 100%;
-      width: 100%;≈
-    }
     body {
-      position: relative;
-      padding-bottom: 100px;
+      position: absolute;
+      min-height: 500px;
     }
     footer {
       position: absolute;
@@ -35,15 +35,11 @@
 </head>
 <body>
 <div class="container">
-  <div class="row">
-    <div class="col-xs-4 col-xs-offset-4">
-      <h1>Destiny Clan Roster</h1>
-      <form id="search_form" role="form">
-        <input type="text" class="form-control" id="search_query" placeholder="Destiny Clan Name">
-        <button type="submit" class="btn btn-primary btn-block">Search</button>
-      </form>
-    </div>
-  </div>
+  <h1>Destiny Clan Roster</h1>
+  <form id="search_form" role="form">
+    <input type="text" class="form-control" id="search_query" placeholder="Destiny Clan Name">
+    <button type="submit" class="btn btn-primary btn-block">Search</button>
+  </form>
 </div>
 
 <footer><a href="http://github.com/Fugiman/Destiny">Source Code</a> &#0169; Chris Gamble 2014 under the MIT license</footer>
