@@ -34,18 +34,16 @@
       float: left;
       margin-right: 8px;
     }
-    .name, .level {
+    .identifier {
       float: left;
       font-size: 2em;
-    }
-    .name {
-      display: block;
     }
     .level {
       float: right;
       margin: 4px;
     }
     .stats, .character, .seen {
+      float: left;
       font-size: 0.8em;
       line-height: 1;
     }
@@ -76,22 +74,24 @@
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
 
-        <span class="name"><t:slot name="name" /></span>
-        <span class="level"><t:slot name="levelString" /></span>
+        <div class="identifier clearfix">
+          <span class="name"><t:slot name="name" /></span>
+          <span class="level"><t:slot name="levelString" /></span>
+        </div>
 
-        <div class="stats">
+        <div class="stats clearfix">
           <span class="light">(<t:slot name="lightString" /> light)</span>
           <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
           <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
         </div>
 
-        <div class="character">
+        <div class="character clearfix">
           <t:slot name="gender" />
           <t:slot name="race" />
           <t:slot name="class" />
         </div>
 
-        <div class="seen">Last seen: <t:slot name="lastSeenString" /></div>
+        <div class="seen clearfix">Last seen: <t:slot name="lastSeenString" /></div>
       </div>
     </div>
 
@@ -101,22 +101,24 @@
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
 
-        <span class="name"><t:slot name="name" /></span>
-        <span class="level"><t:slot name="levelString" /></span>
+        <div class="identifier clearfix">
+          <span class="name"><t:slot name="name" /></span>
+          <span class="level"><t:slot name="levelString" /></span>
+        </div>
 
-        <div class="stats">
+        <div class="stats clearfix">
           <span class="light">(<t:slot name="lightString" /> light)</span>
           <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
           <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
         </div>
 
-        <div class="character">
+        <div class="character clearfix">
           <t:slot name="gender" />
           <t:slot name="race" />
           <t:slot name="class" />
         </div>
 
-        <div class="seen">Last seen: <t:slot name="lastSeenString" /></div>
+        <div class="seen clearfix">Last seen: <t:slot name="lastSeenString" /></div>
       </div>
     </div>
   </div>
