@@ -30,23 +30,24 @@
       width: 474px;
       height: 96px;
     }
-    .name {
-      display: block;
+    img {
+      float: left;
+      margin-right: 8px;
     }
     .name, .level {
       float: left;
       font-size: 2em;
     }
+    .name {
+      display: block;
+    }
     .level {
       float: right;
       margin: 4px;
     }
-    img {
-      float: left;
-      margin-right: 8px;
-    }
-    .light, .grimoire, .character, .played, .seen {
+    .stats, .character, .seen {
       font-size: 0.8em;
+      line-height: 1;
     }
 
     footer {
@@ -74,20 +75,23 @@
       <div class="guardian" t:render="playstation">
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
+
         <span class="name"><t:slot name="name" /></span>
         <span class="level"><t:slot name="levelString" /></span>
-        <br /><br />
-        <span class="light">(<t:slot name="lightString" /> light)</span>
-        <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
-        <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
-        <br />
-        <span class="character">
+
+        <div class="stats">
+          <span class="light">(<t:slot name="lightString" /> light)</span>
+          <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
+          <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
+        </div>
+
+        <div class="character">
           <t:slot name="gender" />
           <t:slot name="race" />
           <t:slot name="class" />
-        </span>
-        <br />
-        <span class="seen">Last seen <t:slot name="lastSeenString" /></span>
+        </div>
+
+        <div class="seen">Last seen: <t:slot name="lastSeenString" /></div>
       </div>
     </div>
 
@@ -96,20 +100,23 @@
       <div class="guardian" t:render="xbox">
         <t:attr name="style"><t:slot name="style" /></t:attr>
         <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
+
         <span class="name"><t:slot name="name" /></span>
         <span class="level"><t:slot name="levelString" /></span>
-        <br /><br />
-        <span class="light">(<t:slot name="lightString" /> light)</span>
-        <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
-        <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
-        <br />
-        <span class="character">
+
+        <div class="stats">
+          <span class="light">(<t:slot name="lightString" /> light)</span>
+          <span class="grimoire">(<t:slot name="grimoireString" /> grimoire)</span>
+          <span class="played">(<t:slot name="minutesPlayedString" /> minutes played)</span>
+        </div>
+
+        <div class="character">
           <t:slot name="gender" />
           <t:slot name="race" />
           <t:slot name="class" />
-        </span>
-        <br />
-        <span class="seen">Last seen <t:slot name="lastSeenString" /></span>
+        </div>
+
+        <div class="seen">Last seen: <t:slot name="lastSeenString" /></div>
       </div>
     </div>
   </div>
