@@ -113,13 +113,13 @@ def lookupCharacters(member, characters):
       continue
 
     # Load extra data about the characters, if we can
-    characters = {}
+    extra_char_data = {}
     try:
       response = yield treq.get("http://www.bungie.net/Platform/Destiny/{!s}/Account/{!s}/".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"]))
       extra_data = yield treq.json_content(response)
       extra_data = extra_data["Response"]["data"]["characters"]
       for character in extra_data:
-        characters[character["characterBase"]["characterId"]] = character["characterBase"]
+        extra_char_data[character["characterBase"]["characterId"]] = character["characterBase"]
     except:
       pass
 
@@ -149,8 +149,8 @@ def lookupCharacters(member, characters):
       }
       character_data["style"] = 'background: url("' + character_data["background"] + '")'
 
-      if character["characterId"] in characters:
-        extra_data = characters[character["characterId"]]
+      if character["characterId"] in extra_char_data:
+        extra_data = extra_char_data[character["characterId"]]
         character_data["light"] = extra_data["stats"]["STAT_LIGHT"]["value"]
         character_data["lightString"] = "{:,d}".format(character_data["light"])
         character_data["grimoire"] = extra_data["grimoireScore"]
