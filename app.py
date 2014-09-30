@@ -4,7 +4,7 @@ from twisted.web import client
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
 
-import datetime, json, klein, re, treq
+import HTMLParser, datetime, json, klein, re, treq
 
 ALIASES = {
   "twitch": "Twitch Staff"
@@ -25,6 +25,25 @@ def branchDeferred(deferred):
   return branch
 
 @inlineCallbacks
+def resolveClan(id):
+  response = yield treq.get("http://www.bungie.net/Platform/Group/{!s}/".format(id))
+  data = yield treq.json_content(response)
+  clan = data["Response"]["detail"]
+
+  if clan:
+    returnValue({
+      "id": int(clan["groupId"]),
+      "name": clan["name"],
+      "motto": HTMLParser.HTMLParser().unescape(clan["about"]),
+    })
+  else:
+    returnValue({
+      "id": 0,
+      "name": "No Clan Found",
+      "motto": "Better luck next time"
+    })
+
+@inlineCallbacks
 def lookupClan(name):
   response = yield treq.post("http://www.bungie.net/Platform/Group/Search/", data=json.dumps({
     "contents": {
@@ -40,7 +59,7 @@ def lookupClan(name):
     returnValue({
       "id": int(clan["groupId"]),
       "name": clan["name"],
-      "motto": clan["about"],
+      "motto": HTMLParser.HTMLParser().unescape(clan["about"]),
     })
   else:
     returnValue({
@@ -62,7 +81,7 @@ def lookupMembers(id):
 
   while hasMore:
     # No idea what is different between V1, V2, and V3...
-    response = yield treq.get("http://www.bungie.net/Platform/Group/" + str(id) + "/MembersV3/", params={
+    response = yield treq.get("http://www.bungie.net/Platform/Group/{!s}/MembersV3/".format(id), params={
       "itemsPerPage": 50,
       "currentPage": page
     })
@@ -83,7 +102,7 @@ def lookupMembers(id):
 
 @inlineCallbacks
 def lookupCharacters(member, characters):
-  response = yield treq.get("http://www.bungie.net/Platform/User/GetBungieAccount/" + member["membershipId"].encode("UTF-8") + "/254/")
+  response = yield treq.get("http://www.bungie.net/Platform/User/GetBungieAccount/{!s}/254/".format(member["membershipId"]))
   data = yield treq.json_content(response)
   for account in data["Response"]["destinyAccounts"]:
     if account["userInfo"]["membershipType"] == 1:
@@ -139,8 +158,8 @@ def lookupCharacters(member, characters):
 class ClanPage(Element):
   loader = XMLFile("clan.html")
 
-  def __init__(self, clan_id):
-    self._clan = maybeDeferred(lambda: clan_id)
+  def __init__(self, clan):
+    self._clan = clan
     self._members = branchDeferred(self._clan).addCallback(lambda c: c["id"]).addCallback(lookupMembers)
 
   @renderer
@@ -182,7 +201,7 @@ class ClanPage(Element):
 
 @klein.route('/<int:id>')
 def clan_id(request, id):
-  return ClanPage(id)
+  return ClanPage(resolveClan(id))
 
 @klein.route('/<string:name>')
 def clan_name(request, name):
