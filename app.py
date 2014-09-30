@@ -112,6 +112,17 @@ def lookupCharacters(member, characters):
     else:
       continue
 
+    # Load extra data about the characters, if we can
+    characters = {}
+    try:
+      response = yield treq.get("http://www.bungie.net/Platform/Destiny/{!s}/Account/{!s}/".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"]))
+      extra_data = yield treq.json_content(response)
+      extra_data = extra_data["Response"]["data"]["characters"]
+      for character in extra_data:
+        characters[character["characterBase"]["characterId"]] = character["characterBase"]
+    except:
+      pass
+
     for character in account["characters"]:
       character_data = {
         "bungieId": member["membershipId"],
@@ -138,10 +149,8 @@ def lookupCharacters(member, characters):
       }
       character_data["style"] = 'background: url("' + character_data["background"] + '")'
 
-      try:
-        response = yield treq.get("http://www.bungie.net/Platform/Destiny/{!s}/Account/{!s}/Character/{!s}/".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"], character["characterId"]))
-        extra_data = yield treq.json_content(response)
-        extra_data = extra_data["Response"]["data"]["characterBase"]
+      if character["characterId"] in characters:
+        extra_data = characters[character["characterId"]]
         character_data["light"] = extra_data["stats"]["STAT_LIGHT"]["value"]
         character_data["lightString"] = "{:,d}".format(character_data["light"])
         character_data["grimoire"] = extra_data["grimoireScore"]
@@ -150,8 +159,6 @@ def lookupCharacters(member, characters):
         character_data["minutesPlayedString"] = "{:,d}".format(character_data["minutesPlayed"])
         character_data["lastSeen"] = extra_data["dateLastPlayed"]
         character_data["lastSeenString"] = datetime.datetime.strptime(extra_data["dateLastPlayed"], "%Y-%m-%dT%H:%M:%SZ").strftime("%B %d, %I:%M%p")
-      except:
-        pass
 
       characters[platform].append(character_data)
 
