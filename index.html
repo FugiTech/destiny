@@ -2,17 +2,32 @@
 <html>
 <head>
   <title>Destiny Clan Roster</title>
+  <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+  <style>
+    body {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <form id="search_form">
-    <input type="text" id="search_query">
-    <input type="submit">
-  </form>
-  <script>
-    document.getElementById("search_form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      window.location = "/" + document.getElementById("search_query").value;
-    });
-  </script>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-4 col-xs-offset-4">
+      <h1>Destiny Clan Roster</h1>
+      <form id="search_form" role="form">
+        <input type="text" class="form-control" id="search_query" placeholder="Destiny Clan Name">
+        <button type="submit" class="btn btn-primary btn-block">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>
+  document.getElementById("search_form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    window.location = "/" + document.getElementById("search_query").value;
+  });
+</script>
 </body>
 </html>
