@@ -83,74 +83,80 @@
   <div class="row">
     <div class="col-md-6">
       <h3>Playstation</h3>
-      <div class="guardian" t:render="playstation">
-        <t:attr name="style"><t:slot name="style" /></t:attr>
-        <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
+      <a t:render="playstation">
+        <t:attr name="href"><t:slot name="profileUrl" /></t:attr>
+        <div class="guardian">
+          <t:attr name="style"><t:slot name="style" /></t:attr>
+          <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
 
-        <div class="descriptors">
-          <div class="name"><t:slot name="name" /></div>
-          <div class="character">
-            <t:slot name="gender" />
-            <t:slot name="race" />
-            <t:slot name="class" />
+          <div class="descriptors">
+            <div class="name"><t:slot name="name" /></div>
+            <div class="character">
+              <t:slot name="gender" />
+              <t:slot name="race" />
+              <t:slot name="class" />
+            </div>
+            <div class="seen">Last seen: <t:slot name="lastSeenString" /> (UTC)</div>
           </div>
-          <div class="seen">Last seen: <t:slot name="lastSeenString" /> (UTC)</div>
-        </div>
 
-        <div class="stats">
-          <div class="level" title="Level">
-            <t:slot name="levelString" />
-          </div>
-          <div class="light" title="Light">
-            <t:slot name="lightString" />
-            &#10022;
-          </div>
-          <div class="grimoire" title="Grimoire Score">
-            <t:slot name="grimoireString" />
-            <img src="http://static01.bungie.net/img/theme/destiny/icons/icon_grimoire_lightgray.png" />
-          </div>
-          <div class="played" title="Minutes Played">
-            <t:slot name="minutesPlayedString" />
-            <span class="glyphicon glyphicon-time"></span>
+          <div class="stats">
+            <div class="level" title="Level">
+              <t:slot name="levelString" />
+            </div>
+            <div class="light" title="Light">
+              <t:slot name="lightString" />
+              &#10022;
+            </div>
+            <div class="grimoire" title="Grimoire Score">
+              <t:slot name="grimoireString" />
+              <img src="http://static01.bungie.net/img/theme/destiny/icons/icon_grimoire_lightgray.png" />
+            </div>
+            <div class="played" title="Minutes Played">
+              <t:slot name="minutesPlayedString" />
+              <span class="glyphicon glyphicon-time"></span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
 
     <div class="col-md-6">
       <h3>Xbox</h3>
-      <div class="guardian" t:render="xbox">
-        <t:attr name="style"><t:slot name="style" /></t:attr>
-        <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
+      <a t:render="xbox">
+        <t:attr name="href"><t:slot name="profileUrl" /></t:attr>
+        <div class="guardian">
+          <t:attr name="style"><t:slot name="style" /></t:attr>
+          <img class="icon"><t:attr name="src"><t:slot name="icon" /></t:attr></img>
 
-        <div class="descriptors">
-          <div class="name"><t:slot name="name" /></div>
-          <div class="character">
-            <t:slot name="gender" />
-            <t:slot name="race" />
-            <t:slot name="class" />
+          <div class="descriptors">
+            <div class="name"><t:slot name="name" /></div>
+            <div class="character">
+              <t:slot name="gender" />
+              <t:slot name="race" />
+              <t:slot name="class" />
+            </div>
+            <div class="seen">Last seen: <t:slot name="lastSeenString" /> (UTC)</div>
           </div>
-          <div class="seen">Last seen: <t:slot name="lastSeenString" /> (UTC)</div>
-        </div>
 
-        <div class="stats">
-          <div class="level" title="Level">
-            <t:slot name="levelString" />
-          </div>
-          <div class="light" title="Light">
-            <t:slot name="lightString" />
-            &#10022;
-          </div>
-          <div class="grimoire" title="Grimoire Score">
-            <t:slot name="grimoireString" />
-            <img src="http://static01.bungie.net/img/theme/destiny/icons/icon_grimoire_lightgray.png" />
-          </div>
-          <div class="played" title="Minutes Played">
-            <t:slot name="minutesPlayedString" />
-            <span class="glyphicon glyphicon-time"></span>
+          <div class="stats">
+            <div class="level" title="Level">
+              <t:slot name="levelString" />
+            </div>
+            <div class="light" title="Light">
+              <t:slot name="lightString" />
+              &#10022;
+            </div>
+            <div class="grimoire" title="Grimoire Score">
+              <t:slot name="grimoireString" />
+              <img src="http://static01.bungie.net/img/theme/destiny/icons/icon_grimoire_lightgray.png" />
+            </div>
+            <div class="played" title="Minutes Played">
+              <t:slot name="minutesPlayedString" />
+              <span class="glyphicon glyphicon-time"></span>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>

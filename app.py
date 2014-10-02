@@ -151,6 +151,7 @@ def lookupCharacters(member, characters):
         "levelString": "{:,d}".format(character["level"]),
         "icon": "http://bungie.net" + character["emblemPath"],
         "background": "http://bungie.net" + character["backgroundPath"],
+        "profileUrl": "http://www.bungie.net/en/Legend/{!s}/{!s}/{!s}".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"], character["characterId"]),
 
         # Default values for extra data (in case it fails)
         "light": 0,
