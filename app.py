@@ -5,11 +5,15 @@ from twisted.web import client
 from twisted.web.static import File
 from twisted.web.template import Element, XMLFile, renderer
 
-import HTMLParser, datetime, json, klein, re, treq
+import HTMLParser, datetime, json, klein, re, treq, os
 
 ALIASES = {
   "twitch": "Twitch Staff"
 }
+
+apiKey=os.environ['BUNGIE_APIKEY']
+authHeader="X-API-Key: " + apiKey
+# treq doesn't like headers=authHeader :(
 
 # Decrease noise in log files
 client._HTTP11ClientFactory.noisy = False
@@ -27,7 +31,7 @@ def branchDeferred(deferred):
 
 @inlineCallbacks
 def resolveClan(id):
-  response = yield treq.get("http://www.bungie.net/Platform/Group/{!s}/".format(id))
+  response = yield treq.get("https://www.bungie.net/Platform/Group/{!s}/".format(id), headers={'X-API-Key': [apiKey]})
   data = yield treq.json_content(response)
   clan = data["Response"]["detail"]
 
@@ -53,7 +57,7 @@ def resolveClan(id):
 
 @inlineCallbacks
 def lookupClan(name):
-  response = yield treq.post("http://www.bungie.net/Platform/Group/Search/", data=json.dumps({
+  response = yield treq.post("https://www.bungie.net/Platform/Group/Search/", headers={'X-API-Key': [apiKey]}, data=json.dumps({
     "contents": {
       "searchValue": name
     },
@@ -96,7 +100,7 @@ def lookupMembers(id):
 
   while hasMore:
     # No idea what is different between V1, V2, and V3...
-    response = yield treq.get("http://www.bungie.net/Platform/Group/{!s}/MembersV3/".format(id), params={
+    response = yield treq.get("https://www.bungie.net/Platform/Group/{!s}/MembersV3/".format(id), headers={'X-API-Key': [apiKey]}, params={
       "itemsPerPage": 50,
       "currentPage": page
     })
@@ -117,7 +121,7 @@ def lookupMembers(id):
 
 @inlineCallbacks
 def lookupCharacters(member, characters):
-  response = yield treq.get("http://www.bungie.net/Platform/User/GetBungieAccount/{!s}/254/".format(member["membershipId"]))
+  response = yield treq.get("https://www.bungie.net/Platform/User/GetBungieAccount/{!s}/254/".format(member["membershipId"]), headers={'X-API-Key': [apiKey]})
   data = yield treq.json_content(response)
   for account in data["Response"]["destinyAccounts"]:
     if account["userInfo"]["membershipType"] == 1:
@@ -130,7 +134,7 @@ def lookupCharacters(member, characters):
     # Load extra data about the characters, if we can
     extra_char_data = {}
     try:
-      response = yield treq.get("http://www.bungie.net/Platform/Destiny/{!s}/Account/{!s}/".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"]))
+      response = yield treq.get("https://www.bungie.net/Platform/Destiny/{!s}/Account/{!s}/".format(account["userInfo"]["membershipType"], account["userInfo"]["membershipId"]), headers={'X-API-Key': [apiKey]})
       extra_data = yield treq.json_content(response)
       extra_data = extra_data["Response"]["data"]["characters"]
       for character in extra_data:
@@ -237,7 +241,6 @@ def clan_id(request, id):
 def clan_name(request, name):
   if name.lower() in ALIASES:
     name = ALIASES[name.lower()]
-
   return ClanPage(lookupClan(name))
 
 @klein.route('/favicon.ico')
@@ -245,7 +248,7 @@ def favicon(request):
   return None
 
 @klein.route('/robots.txt')
-def favicon(request):
+def robots(request):
   return None
 
 @klein.route('/', branch=True)
@@ -263,7 +266,12 @@ def monkeypatch_klein_render(render):
     return render(request)
   return new_render
 
+
 def resource():
   klein_resource = klein.resource()
   klein_resource.render = monkeypatch_klein_render(klein_resource.render)
   return klein_resource
+
+if __name__ == "__main__":
+  klein.run("localhost", 8080)
+
